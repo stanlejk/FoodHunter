@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
-import LoginForm from './LoginForm'
+import React, { Component } from "react";
+import { View, Text, StyleSheet, Button, Image, KeyboardAvoidingView } from "react-native";
+import LoginForm from '../components/Login/LoginForm'
 
-export default class Login extends Component {
+class LoginScreen extends React.Component {
+
+    static navigationOptions = {
+        header: null
+    }
+
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
+                <Button title="Go To Home Screen"
+                    onPress={() => this.props.navigation.navigate('Home')} />
                 <View style={styles.logoContainer}>
                     <Image
                         style={styles.logo}
-                        source={ require('../../images/logo.png') }
+                        source={ require('../images/logo.png') }
                     />
                     <Text style={styles.title}>FoodHunter</Text>
                     <Text style={styles.subtitle}>Like Tinder, for food!</Text>
@@ -18,9 +25,10 @@ export default class Login extends Component {
                     <LoginForm />
                 </View>
             </KeyboardAvoidingView>
-        )
+        );
     }
 }
+export default LoginScreen;
 
 const styles = StyleSheet.create({
     container: {

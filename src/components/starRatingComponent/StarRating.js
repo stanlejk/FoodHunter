@@ -24,7 +24,6 @@ export default class StarRating extends Component<Props> {
 		// Loop 5 times
 		if (ratingObj.rating != null) {
 			let path = require('./zeroStars.png');
-			console.log(ratingObj.rating);
 			if(ratingObj.rating > 0.0 && ratingObj.rating <= 1.0){
 				path = require('./oneStars.png');
 			}

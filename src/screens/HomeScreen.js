@@ -22,19 +22,25 @@ const config = {
     }
 };
 
-const resultsArray = [];
-
 class HomeScreen extends React.Component {
-    componentWillMount() {
+    getYelpResults = () => {
         axios.get('https://api.yelp.com/v3/businesses/search', config)
         .then( response => {
-            console.log(response);
-            console.log(response.data.businesses[0].alias);
+            this.resultsArray = [];
+            for (var i = 0; i < response.data.businesses.length; i++) {
+                this.resultsArray.push({
+                    id: i,
+                    cardView_Title: response.data.businesses[i].name,
+                    backgroundColor: '#4CAF50'
+                })
+            }
+            this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });
+            // this.createStackOfCards();
         }).catch((error)=>{
             console.log("Api call error");
             alert(error.message);
         });
-        console.log(resultsArray);
+        this.render();
     }
 
     static navigationOptions = {
@@ -46,45 +52,43 @@ class HomeScreen extends React.Component {
         this.state = { Sample_CardView_Items_Array: [
             {
                 id: '1',
-                cardView_Title: 'CardView 1'
-                // backgroundColor: '#4CAF50'
-            },
-            {
-                id: '2',
-                cardView_Title: 'CardView 2'
-                // backgroundColor: '#607D8B'
-            },
-            {
-                id: '3',
-                cardView_Title: 'CardView 3'
-                // backgroundColor: '#9C27B0'
-            },
-            {
-                id: '4',
-                cardView_Title: 'CardView 4'
-                // backgroundColor: '#00BCD4'
-            },
-            {
-                id: '5',
-                cardView_Title: 'CardView 5'
-                // backgroundColor: '#FFC107'
-            }], No_More_CardView: false };
+                cardView_Title: "Loading"
+            }
+        ]}
+        this.getYelpResults();
     }
 
     componentDidMount(){
-        this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array.reverse() });
-        if( this.state.Sample_CardView_Items_Array.length == 0 ){
+        if (this.state.Sample_CardView_Items_Array != null) {
+            if (this.state.Sample_CardView_Items_Array.length == 0) {
+                this.setState({ No_More_CardView: true });
+            }
+            else {
+                this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array.reverse() });
+            }
+        }
+        else {
             this.setState({ No_More_CardView: true });
         }
     }
 
     removeCardView =(id)=> {
-        this.state.Sample_CardView_Items_Array.splice( this.state.Sample_CardView_Items_Array.findIndex( x => x.id == id ), 1 );
-        this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array }, () => {
-            if( this.state.Sample_CardView_Items_Array.length == 0 ){
+        if (this.state.Sample_CardView_Items_Array != null) {
+            if (this.state.Sample_CardView_Items_Array.length == 0 ) {
                 this.setState({ No_More_CardView: true });
             }
-        });
+            else {
+                this.state.Sample_CardView_Items_Array.splice( this.state.Sample_CardView_Items_Array.findIndex( x => x.id == id ), 1 );
+                this.setState({ Sample_CardView_Items_Array: this.state.Sample_CardView_Items_Array }, () => {
+                    if( this.state.Sample_CardView_Items_Array.length == 0 ){
+                        this.setState({ No_More_CardView: true });
+                    }
+                });
+            }
+        }
+        else {
+            this.setState({ No_More_CardView: true });
+        }
     }
 
     render(){

@@ -26,12 +26,13 @@ class HomeScreen extends React.Component {
     getYelpResults = () => {
         axios.get('https://api.yelp.com/v3/businesses/search', config)
         .then( response => {
+            console.log(response);
             this.resultsArray = [];
             for (var i = 0; i < response.data.businesses.length; i++) {
                 this.resultsArray.push({
                     id: i,
                     cardView_Title: response.data.businesses[i].name,
-                    backgroundColor: '#4CAF50'
+                    mainImage: response.data.businesses[i].image_url
                 })
             }
             this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });

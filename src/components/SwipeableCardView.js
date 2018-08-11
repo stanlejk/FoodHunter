@@ -13,7 +13,6 @@ import {
 } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const remote = 'https://media.wnyc.org/i/800/0/l/85/1/blackbox.jpeg';
 
 class SwipeableCardView extends React.Component {
     constructor(){
@@ -111,11 +110,12 @@ class SwipeableCardView extends React.Component {
             ]}>
                 <ImageBackground
                     style={ styles.cardView_Image_Style }
-                    source={{ uri: remote }}>
+                    source={{ uri: this.props.item.mainImage }}>
                     <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
                     {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
                     {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
                 </ImageBackground>
+                <View style={styles.overlay} pointerEvents="none"/>
             </Animated.View>
         )
     }
@@ -124,6 +124,14 @@ class SwipeableCardView extends React.Component {
 export default SwipeableCardView;
 
 const styles = StyleSheet.create({
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.1)'
+    },
     cardView_Image_Style: {
         width: '100%',
         height: '100%',

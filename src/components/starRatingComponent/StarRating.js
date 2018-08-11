@@ -18,6 +18,8 @@ export default class StarRating extends Component<Props> {
 		// Recieve the ratings object from the props
 		let ratingObj = this.props.ratingObj;
 
+		let stars;
+
 		if (ratingObj.rating != null) {
 			let path = require('./zeroStars.png');
 			if(ratingObj.rating > 0.0 && ratingObj.rating <= 1.0){
@@ -47,7 +49,7 @@ export default class StarRating extends Component<Props> {
 			else {
 				path = require('./fiveStars.png');
 			}
-			stars.push((<Image style={styles.image} source={path} />));
+			stars = ((<Image style={styles.image} source={path} />));
 		}
 
 		return (

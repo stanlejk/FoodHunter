@@ -37,7 +37,9 @@ class HomeScreen extends React.Component {
                     id: i,
                     cardView_Title: response.data.businesses[i].name,
                     mainImage: response.data.businesses[i].image_url,
-                    ratingObj: businessRatingObj
+                    ratingObj: businessRatingObj,
+                    pricing: response.data.businesses[i].price,
+                    categories: response.data.businesses[i].categories
                 })
             }
             this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });

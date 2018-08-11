@@ -95,6 +95,22 @@ class SwipeableCardView extends React.Component {
         });
     }
 
+    getFormattedPriceandCategories = () => {
+        let resultString = "";
+        if ( this.props.item.pricing != null ) {
+            resultString += this.props.item.pricing + " - ";
+        }
+        if ( this.props.item.categories != null ) {
+            for (var i = 0; i < this.props.item.categories.length; i++) {
+                if (i != 0) {
+                    resultString += ", "
+                }
+                resultString += this.props.item.categories[i].title;
+            }
+        }
+        return resultString;
+    }
+
     render(){
         const rotateCard = this.state.Xposition.interpolate({
             inputRange: [-200, 0, 200],
@@ -113,6 +129,7 @@ class SwipeableCardView extends React.Component {
                     source={{ uri: this.props.item.mainImage }}>
                     <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
                     <StarRating ratingObj={ this.props.item.ratingObj } ></StarRating>
+                    <Text style = { styles.pricing_style }> { this.getFormattedPriceandCategories() } </Text>
                     {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
                     {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
                 </ImageBackground>
@@ -148,22 +165,27 @@ const styles = StyleSheet.create({
     },
     CardView_Title: {
         color: '#fff',
-        fontSize: 24
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    pricing_style: {
+        color: '#fff',
+        fontSize: 20
     },
     Left_Text_Style: {
-        top: 22,
+        bottom: 22,
         right: 32,
         position: 'absolute',
-        color: '#fff',
+        color: 'red',
         fontSize: 20,
         fontWeight: 'bold',
         backgroundColor: 'transparent'
     },
     Right_Text_Style:{
-        top: 22,
+        bottom: 22,
         left: 32,
         position: 'absolute',
-        color: '#fff',
+        color: 'green',
         fontSize: 20,
         fontWeight: 'bold',
         backgroundColor: 'transparent'

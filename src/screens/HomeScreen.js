@@ -22,13 +22,19 @@ const config = {
     }
 };
 
+const resultsArray = [];
+
 class HomeScreen extends React.Component {
     componentWillMount() {
         axios.get('https://api.yelp.com/v3/businesses/search', config)
-        .then(response => console.log(response)).catch((error)=>{
+        .then( response => {
+            console.log(response);
+            console.log(response.data.businesses[0].alias);
+        }).catch((error)=>{
             console.log("Api call error");
             alert(error.message);
         });
+        console.log(resultsArray);
     }
 
     static navigationOptions = {

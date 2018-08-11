@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import {
     View,
-    Image,
+    ImageBackground,
     Text,
     StyleSheet,
     Button,
@@ -109,13 +109,13 @@ class SwipeableCardView extends React.Component {
                         transform: [{ translateX: this.state.Xposition },
                             { rotate: rotateCard }]}
             ]}>
-                <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
-                {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
-                {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
-                <Image
+                <ImageBackground
                     style={ styles.cardView_Image_Style }
                     source={{ uri: remote }}>
-                </Image>
+                    <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
+                    {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
+                    {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
+                </ImageBackground>
             </Animated.View>
         )
     }
@@ -127,8 +127,7 @@ const styles = StyleSheet.create({
     cardView_Image_Style: {
         width: '100%',
         height: '100%',
-        position: 'relative',
-        backgroundColor: 'black'
+        position: 'relative'
     },
     cardView_Style: {
         width: '75%',

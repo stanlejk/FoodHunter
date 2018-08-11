@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import {
     View,
+    Image,
     Text,
     StyleSheet,
     Button,
@@ -12,7 +13,7 @@ import {
 } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const remote = 'https://s15.postimg.org/tw2qkvmcb/400px.png';
+const remote = 'https://media.wnyc.org/i/800/0/l/85/1/blackbox.jpeg';
 
 class SwipeableCardView extends React.Component {
     constructor(){
@@ -108,16 +109,13 @@ class SwipeableCardView extends React.Component {
                         transform: [{ translateX: this.state.Xposition },
                             { rotate: rotateCard }]}
             ]}>
-                <Image
-                    style={{
-                        flex: 1,
-                        resizeMode,
-                    }}
-                    source={{ uri: remote }}>
-                </Image>
                 <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
                 {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
                 {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
+                <Image
+                    style={ styles.cardView_Image_Style }
+                    source={{ uri: remote }}>
+                </Image>
             </Animated.View>
         )
     }
@@ -126,11 +124,11 @@ class SwipeableCardView extends React.Component {
 export default SwipeableCardView;
 
 const styles = StyleSheet.create({
-    MainContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+    cardView_Image_Style: {
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        backgroundColor: 'black'
     },
     cardView_Style: {
         width: '75%',

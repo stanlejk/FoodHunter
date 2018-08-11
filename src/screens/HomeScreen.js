@@ -40,28 +40,28 @@ class HomeScreen extends React.Component {
         this.state = { Sample_CardView_Items_Array: [
             {
                 id: '1',
-                cardView_Title: 'CardView 1',
-                backgroundColor: '#4CAF50'
+                cardView_Title: 'CardView 1'
+                // backgroundColor: '#4CAF50'
             },
             {
                 id: '2',
-                cardView_Title: 'CardView 2',
-                backgroundColor: '#607D8B'
+                cardView_Title: 'CardView 2'
+                // backgroundColor: '#607D8B'
             },
             {
                 id: '3',
-                cardView_Title: 'CardView 3',
-                backgroundColor: '#9C27B0'
+                cardView_Title: 'CardView 3'
+                // backgroundColor: '#9C27B0'
             },
             {
                 id: '4',
-                cardView_Title: 'CardView 4',
-                backgroundColor: '#00BCD4'
+                cardView_Title: 'CardView 4'
+                // backgroundColor: '#00BCD4'
             },
             {
                 id: '5',
-                cardView_Title: 'CardView 5',
-                backgroundColor: '#FFC107'
+                cardView_Title: 'CardView 5'
+                // backgroundColor: '#FFC107'
             }], No_More_CardView: false };
     }
 
@@ -104,34 +104,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
     },
-    cardView_Style: {
-        width: '75%',
-        height: '45%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        borderRadius: 7
-    },
     CardView_Title: {
         color: '#fff',
         fontSize: 24
-    },
-    Left_Text_Style: {
-        top: 22,
-        right: 32,
-        position: 'absolute',
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        backgroundColor: 'transparent'
-    },
-    Right_Text_Style:{
-        top: 22,
-        left: 32,
-        position: 'absolute',
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        backgroundColor: 'transparent'
     }
 });

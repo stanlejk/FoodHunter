@@ -10,8 +10,26 @@ import {
     PanResponder
 } from "react-native";
 import SwipeableCardView from '../components/SwipeableCardView';
+import axios from 'axios';
+
+const API_KEY = '';
+
+const config = {
+    headers: {'Authorization': 'Bearer ' + API_KEY},
+    params: {
+        term: 'tacos',
+        location: 'main 123st'
+    }
+};
 
 class HomeScreen extends React.Component {
+    componentWillMount() {
+        axios.get('https://api.yelp.com/v3/businesses/search', config)
+        .then(response => console.log(response)).catch((error)=>{
+            console.log("Api call error");
+            alert(error.message);
+        });
+    }
 
     static navigationOptions = {
         header: null

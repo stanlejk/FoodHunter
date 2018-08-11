@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const remote = 'https://s15.postimg.org/tw2qkvmcb/400px.png';
 
 class SwipeableCardView extends React.Component {
     constructor(){
@@ -47,7 +48,7 @@ class SwipeableCardView extends React.Component {
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
-                if( gestureState.dx < SCREEN_WIDTH - 150 && gestureState.dx > -SCREEN_WIDTH + 150 ){
+                if( gestureState.dx < SCREEN_WIDTH - 250 && gestureState.dx > -SCREEN_WIDTH + 250 ){
                     this.setState({
                         LeftText: false,
                         RightText: false
@@ -58,7 +59,7 @@ class SwipeableCardView extends React.Component {
                         bounciness: 10,
                     }, { useNativeDriver: true }).start();
                 }
-                else if( gestureState.dx > SCREEN_WIDTH - 150 ){
+                else if( gestureState.dx > SCREEN_WIDTH - 250 ){
                     Animated.parallel([
                         Animated.timing( this.state.Xposition, {
                             toValue: SCREEN_WIDTH,
@@ -74,7 +75,7 @@ class SwipeableCardView extends React.Component {
                         });
                     });
                 }
-                else if( gestureState.dx < -SCREEN_WIDTH + 150 ){
+                else if( gestureState.dx < -SCREEN_WIDTH + 250 ){
                     Animated.parallel([
                         Animated.timing( this.state.Xposition, {
                             toValue: -SCREEN_WIDTH,
@@ -107,9 +108,16 @@ class SwipeableCardView extends React.Component {
                         transform: [{ translateX: this.state.Xposition },
                             { rotate: rotateCard }]}
             ]}>
+                <Image
+                    style={{
+                        flex: 1,
+                        resizeMode,
+                    }}
+                    source={{ uri: remote }}>
+                </Image>
                 <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
-                {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> Left Swipe </Text>) : null}
-                {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Right Swipe </Text>) : null}
+                {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
+                {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
             </Animated.View>
         )
     }

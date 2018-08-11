@@ -29,14 +29,18 @@ class HomeScreen extends React.Component {
             console.log(response);
             this.resultsArray = [];
             for (var i = 0; i < response.data.businesses.length; i++) {
+                var businessRatingObj = {
+                    rating: response.data.businesses[i].rating,
+                    numOfRatings: response.data.businesses[i].review_count
+                }
                 this.resultsArray.push({
                     id: i,
                     cardView_Title: response.data.businesses[i].name,
-                    mainImage: response.data.businesses[i].image_url
+                    mainImage: response.data.businesses[i].image_url,
+                    ratingObj: businessRatingObj
                 })
             }
             this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });
-            // this.createStackOfCards();
         }).catch((error)=>{
             console.log("Api call error");
             alert(error.message);
@@ -53,7 +57,11 @@ class HomeScreen extends React.Component {
         this.state = { Sample_CardView_Items_Array: [
             {
                 id: '1',
-                cardView_Title: "Loading"
+                cardView_Title: "Loading",
+                ratingObj: {
+                    rating: 0,
+                    numOfRatings: 0
+                }
             }
         ]}
         this.getYelpResults();

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import StarRating from './starRatingComponent/StarRating';
 import {
     View,
     ImageBackground,
@@ -112,6 +112,7 @@ class SwipeableCardView extends React.Component {
                     style={ styles.cardView_Image_Style }
                     source={{ uri: this.props.item.mainImage }}>
                     <Text style = { styles.CardView_Title }> { this.props.item.cardView_Title } </Text>
+                    <StarRating ratingObj={ this.props.item.ratingObj } ></StarRating>
                     {( this.state.LeftText ) ? (<Text style = { styles.Left_Text_Style }> No thanks! </Text>) : null}
                     {( this.state.RightText ) ? (<Text style = { styles.Right_Text_Style }> Like! </Text>) : null}
                 </ImageBackground>

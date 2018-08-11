@@ -18,10 +18,6 @@ export default class StarRating extends Component<Props> {
 		// Recieve the ratings object from the props
 		let ratingObj = this.props.ratingObj;
 
-		// This array will contain our star tags. We will include this
-		// array between the view tag.
-		let stars = [];
-		// Loop 5 times
 		if (ratingObj.rating != null) {
 			let path = require('./zeroStars.png');
 			if(ratingObj.rating > 0.0 && ratingObj.rating <= 1.0){
@@ -66,7 +62,6 @@ export default class StarRating extends Component<Props> {
 
 const styles = StyleSheet.create({
 	container: {
-		// backgroundColor: '#FF00FF',
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

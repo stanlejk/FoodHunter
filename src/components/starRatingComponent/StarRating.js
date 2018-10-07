@@ -25,28 +25,28 @@ export default class StarRating extends Component<Props> {
 			if(ratingObj.rating > 0.0 && ratingObj.rating <= 1.0){
 				path = require('./oneStars.png');
 			}
-			else if (ratingObj.rating <= 1.5){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 1.5){
 				path = require('./oneHalfStars.png');
 			}
-			else if (ratingObj.rating <= 2.0){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 2.0){
 				path = require('./twoStars.png');
 			}
-			else if (ratingObj.rating <= 2.5){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 2.5){
 				path = require('./twoHalfStars.png');
 			}
-			else if (ratingObj.rating <= 3.0){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 3.0){
 				path = require('./threeStars.png');
 			}
-			else if (ratingObj.rating <= 3.5){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 3.5){
 				path = require('./threeHalfStars.png');
 			}
-			else if (ratingObj.rating <= 4.0){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 4.0){
 				path = require('./fourStars.png');
 			}
-			else if (ratingObj.rating <= 4.5){
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 4.5){
 				path = require('./fourHalfStars.png');
 			}
-			else {
+			else if (ratingObj.rating > 0.0 && ratingObj.rating <= 5.0){
 				path = require('./fiveStars.png');
 			}
 			stars = ((<Image style={styles.image} source={path} />));

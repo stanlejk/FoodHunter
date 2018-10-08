@@ -11,16 +11,19 @@ import {
     StatusBar,
     TouchableOpacity
 } from "react-native";
+import { SearchBar } from 'react-native-elements';
 import Icon from "react-native-vector-icons/Ionicons";
 import SwipeableCardView from '../components/SwipeableCardView';
 import axios from 'axios';
 
-const API_KEY = 'eXudXOEJTDzPWAIxbrcEHFPtR5kg4tB-gaRUppONeUvsgbXvoqVfa3wgotT2Zqyo1u47BzHDwwPmwLgfaPMOQ3IPaMmcin0VNYzjeCF3yrVQkewbcs9K25mkzeFGW3Yx';
+const API_KEY = '';
 
 class HomeScreen extends React.Component {
 
-    // Uses geolocation API to get user's latitude and longitude
-    getUserLocation = () => {
+    // Uses geolocation API to get user's latitude and longitude, and query's Yelp API to generate stack of cards
+    getYelpResults = (userInput) => {
+        if (userInput === "")
+            userInput = "Food";
         // Call getCurrentPosition
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -30,55 +33,48 @@ class HomeScreen extends React.Component {
                     longitude: position.coords.longitude,
                     error: null,
                 });
-                this.getYelpResults();
+                this.setState({ searchTerm: userInput });
+                // Config variable to call yelp API based on location
+                var config = {
+                    headers: {'Authorization': 'Bearer ' + API_KEY},
+                    params: {
+                        term: this.state.searchTerm,
+                        latitude: this.state.latitude,
+                        longitude: this.state.longitude
+                    }
+                };
+                // Use axios to retrieve response from API
+                axios.get('https://api.yelp.com/v3/businesses/search', config)
+                .then( response => {
+                    // Array to carry results of API Call
+                    this.resultsArray = [];
+                    // Iterate through businesses returned by Yelp API
+                    for (var i = 0; i < response.data.businesses.length; i++) {
+                        // Instantiate object for the rating and # of reviews
+                        var businessRatingObj = {
+                            rating: response.data.businesses[i].rating,
+                            numOfRatings: response.data.businesses[i].review_count
+                        }
+                        // Then push the business' info as an object into the array
+                        this.resultsArray.push({
+                            id: i,
+                            cardView_Title: response.data.businesses[i].name,
+                            mainImage: response.data.businesses[i].image_url,
+                            ratingObj: businessRatingObj,
+                            pricing: response.data.businesses[i].price,
+                            categories: response.data.businesses[i].categories
+                        })
+                    }
+                    // Set the result array in the state
+                    this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });
+                }).catch((error)=>{
+                    alert(error.message);
+                });
+                // After results are generated, render the home screen
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 20000 },
         );
-    }
-
-    // Call to Yelp API to generate restaurant list
-    getYelpResults = () => {
-        // Config variable to call yelp API based on location
-        var config = {
-            headers: {'Authorization': 'Bearer ' + API_KEY},
-            params: {
-                term: 'tacos',
-                latitude: this.state.latitude,
-                longitude: this.state.longitude
-            }
-        };
-        // Use axios to retrieve response from API
-        axios.get('https://api.yelp.com/v3/businesses/search', config)
-        .then( response => {
-            console.log(response);
-            // Array to carry results of API Call
-            this.resultsArray = [];
-            // Iterate through businesses returned by Yelp API
-            for (var i = 0; i < response.data.businesses.length; i++) {
-                // Instantiate object for the rating and # of reviews
-                var businessRatingObj = {
-                    rating: response.data.businesses[i].rating,
-                    numOfRatings: response.data.businesses[i].review_count
-                }
-                // Then push the business' info as an object into the array
-                this.resultsArray.push({
-                    id: i,
-                    cardView_Title: response.data.businesses[i].name,
-                    mainImage: response.data.businesses[i].image_url,
-                    ratingObj: businessRatingObj,
-                    pricing: response.data.businesses[i].price,
-                    categories: response.data.businesses[i].categories
-                })
-            }
-            // Set the result array in the state
-            this.setState({ Sample_CardView_Items_Array: this.resultsArray, No_More_CardView: false });
-        }).catch((error)=>{
-            console.log("Api call error");
-            alert(error.message);
-        });
-        // After results are generated, render the home screen
-        this.render();
     }
 
     static navigationOptions = {
@@ -87,8 +83,11 @@ class HomeScreen extends React.Component {
 
     constructor(){
         super();
-        // Temporary placeholder to avoid the app crashing
+        // Initial state placeholder to initialize state
         this.state = {
+            term: "Food",
+            latitude: 34.052235,
+            longitude: -118.243683,
             Sample_CardView_Items_Array: [{
                 id: '1',
                 cardView_Title: "Loading",
@@ -97,12 +96,12 @@ class HomeScreen extends React.Component {
                     numOfRatings: 0
                 }
             }],
-            latitude: null,
-            longitude: null,
+            No_More_CardView: false,
             error: null
         };
-        // Grab user's location and set in state, then generate results from Yelp API call
-        this.getUserLocation();
+        // Grab user's location and set in state
+        this.getYelpResults("Food");
+        // Then generate results from Yelp API call
     }
 
     // Sets the CardView Array in the state
@@ -125,7 +124,7 @@ class HomeScreen extends React.Component {
         }
     }
 
-    //
+    // NOT SURE IF USED
     removeCardView =(id)=> {
         // If the Yelp results have been generated
         if (this.state.Sample_CardView_Items_Array != null) {
@@ -155,12 +154,18 @@ class HomeScreen extends React.Component {
     }
 
     render(){
-        console.log(this.state.latitude + " " + this.state.longitude);
         return(
             // Container
             <View style = { styles.MainContainer }>
-                <StatusBar
-                    barStyle="dark-content"
+                <StatusBar barStyle="dark-content" />
+                // SearchBar to look up specific restaurants
+                <SearchBar
+                    placeholder='Tacos...'
+                    containerStyle={ styles.SearchBarStyle }
+                    inputStyle={ styles.TextInputStyle }
+                    placeholderTextColor='#a1a1a5'
+                    onSubmitEditing={ (event) => this.getYelpResults( event.nativeEvent.text ) }
+                    value={ this.state.searchTerm }
                 />
                 {
                     // Generate SwipeableCardViews using the array in the state
@@ -194,9 +199,22 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     MainContainer: {
         flex: 1,
+        backgroundColor: '#fafafa',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+    },
+    SearchBarStyle: {
+        position: 'absolute',
+        width: '100%',
+        backgroundColor: '#fafafa',
+        borderBottomColor: 'transparent',
+        borderTopColor: 'transparent',
+        top: 25,
+        left: 0
+    },
+    TextInputStyle: {
+        backgroundColor: '#e2e3e5',
     },
     DislikeButtonStyle: {
         alignItems:'center',
